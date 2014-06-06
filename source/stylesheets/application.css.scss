@@ -25,14 +25,16 @@ header.site-head a *, header.post-header a * {
 
 .site-head {
   background-image: url('../images/crystal-cove.jpg');
+  background-position-y: 65%;
 }
 
 .post-template .post-header {
   background-image: url("../images/crystal-cove.jpg");
-  background-position-y: -350px;
+  background-position-y: 57%;
   margin-bottom: 50px;
-  background-size: cover;
+  background-size: 100%;
 }
+
 .post-header .blog-title {
   color: white;
   padding-bottom: 1.4rem;
