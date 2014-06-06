@@ -12,34 +12,33 @@ activate :blog do |blog|
 
   # blog.permalink = "{year}/{month}/{day}/{title}.html"
   # Matcher for blog source files
-  # blog.sources = "{year}-{month}-{day}-{title}.html"
-  # blog.taglink = "tags/{tag}.html"
+  blog.sources = "posts/:year-:month-:day-:title.html"
+  blog.taglink = "tags/{tag}.html"
   # blog.layout = "layout"
   # blog.summary_separator = /(READMORE)/
   # blog.summary_length = 250
   # blog.year_link = "{year}.html"
   # blog.month_link = "{year}/{month}.html"
   # blog.day_link = "{year}/{month}/{day}.html"
-  # blog.default_extension = ".markdown"
+  blog.default_extension = ".markdown.erb"
 
-  # blog.tag_template = "tag.html"
+  blog.tag_template = "/tag.html"
   # blog.calendar_template = "calendar.html"
 
   # Enable pagination
   blog.paginate = true
-  # blog.per_page = 10
+  blog.per_page = 5
   # blog.page_link = "page/{num}"
 end
 
 # Required
-set :blog_url, 'http://www.example.com'
-set :blog_name, 'Middleman'
-set :blog_description, 'Makes developing websites simple.'
-set :author_name, 'Middleman'
-set :author_bio, 'Middleman is a static site generator using all the ' \
-                 'shortcuts and tools in modern web development.'
+set :blog_url, 'http://www.justinleveck.com'
+set :blog_name, 'Justin Leveck'
+set :blog_description, ''
+set :author_name, 'Justin Leveck'
+set :author_bio, 'Ruby Developer' \
 # Optional
-set :author_locaton, nil
+set :author_locaton, 'Orange County, CA'
 set :author_website, nil
 set :blog_logo, nil
 
@@ -48,10 +47,9 @@ page '/feed.xml', layout: false
 ###
 # Compass
 ###
-
 # Change Compass configuration
 # compass_config do |config|
-#   config.output_style = :compact
+#  config.output_style = :compact
 # end
 
 ###
@@ -92,7 +90,7 @@ activate :directory_indexes
 set :haml, { ugly: true }
 set :markdown_engine, :redcarpet
 set :markdown, fenced_code_blocks: true, smartypants: true
-activate :syntax, line_numbers: true
+activate :syntax#, line_numbers: true
 
 # Methods defined in the helpers block are available in templates
 # helpers do
@@ -140,6 +138,7 @@ helpers do
   def tags?(article = current_article)
     article.tags.present?
   end
+
   def tags(article = current_article, separator = ' | ')
     article.tags.join(separator)
   end

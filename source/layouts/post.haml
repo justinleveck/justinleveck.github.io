@@ -6,14 +6,15 @@
           = image_tag blog_logo, alt: 'Blog Logo'
         - else
           %span.blog-title= blog_name
+      = partial('partials/_social_media')
 
     %span.post-meta
+      Posted on
       %time{datetime: current_article.date.strftime('%Y-%m-%d')}
         = current_article.date.strftime('%d %b %Y')
-      - if tags?
-        on #{tags}
 
     %h1.post-title= current_article.title
+    = partial('partials/tags', :locals => { :article => current_page, :post_tags => current_page.tags })
 
     %section.post-content= content
 
