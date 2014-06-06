@@ -1,0 +1,7 @@
+%span.post-meta
+  - if tags?(article)
+    - post_tags.each_with_index do |tag, i|
+      %i{class: "fa fa-tag fa-5"}
+        = link_to tag, tag_path(tag)
+        - if post_tags.count > 1 && i < (post_tags.count - 1)
+          =" "
