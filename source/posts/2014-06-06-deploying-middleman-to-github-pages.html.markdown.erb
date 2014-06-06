@@ -28,8 +28,8 @@ your GitHub username.
 
 As outlined by the [GitHub documentation] (https://help.github.com/articles/setting-up-a-custom-domain-with-github-pages)
 
-1. Create a `CNAME` file with your custom domain in your repository's root
-   directory.
+1. Create a `CNAME` file with your custom domain in the source directory of
+   your source branch.
 
     ```
     blog.justinleveck.com
@@ -43,8 +43,8 @@ As outlined by the [GitHub documentation] (https://help.github.com/articles/sett
 
 2. Configure a CNAME record with your DNS provider.
 
-3. Disable Jekyl processing by creating `.nojkeyll` file in your repository's
-   root directory.
+3. Disable Jekyl processing by creating `.nojkeyll` in the source directory of
+   your source branch.
 
 ### Setup Middleman Deploys
 
@@ -74,4 +74,3 @@ As outlined by the [GitHub documentation] (https://help.github.com/articles/sett
 
     The statically generated files will be pushed to your remote master and
     live within a few minutes.
-
