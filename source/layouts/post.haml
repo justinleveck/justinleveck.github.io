@@ -1,12 +1,12 @@
 %main.content{role: :main}
+  %header.post-header
+    %a.blog-logo{href: '/'}
+      - if blog_logo?
+        = image_tag blog_logo, alt: 'Blog Logo'
+      - else
+        %span.blog-title= blog_name
+    = partial('partials/_social_media')
   %article.post.tag-getting-started
-    %header.post-header
-      %a.blog-logo{href: '/'}
-        - if blog_logo?
-          = image_tag blog_logo, alt: 'Blog Logo'
-        - else
-          %span.blog-title= blog_name
-      = partial('partials/_social_media')
 
     %span.post-meta
       Posted on

@@ -28,13 +28,14 @@ header.site-head a *, header.post-header a * {
 }
 
 .post-template .post-header {
-  background-image: url('../images/crystal-cove.jpg');
-  background-position-y: 500px;
-  background-position-x: -200px;
+  background-image: url("../images/crystal-cove.jpg");
+  background-position-y: -350px;
   margin-bottom: 50px;
+  background-size: cover;
 }
 .post-header .blog-title {
   color: white;
+  padding-bottom: 1.4rem;
 }
 
 .post {
