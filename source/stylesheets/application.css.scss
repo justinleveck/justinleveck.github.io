@@ -61,6 +61,9 @@ header.tag-header i.fa-times-circle-o {
   margin-top: -65px;
 }
 
+ol li {
+  margin-bottom: 1.5rem;
+}
 
 a .fa:hover {
   color: #e5e5e5;
@@ -106,6 +109,7 @@ pre {
   -webkit-overflow-scrolling: touch;
   white-space: pre;
   word-wrap: normal;
+  width: 947px;
 }
 
 pre code {
@@ -117,6 +121,7 @@ pre code {
   outline: none;
   padding: 10px;
   white-space: inherit;
+  width: 947px;
 }
 
 h1 code,h2 code,h3 code,h4 code {
