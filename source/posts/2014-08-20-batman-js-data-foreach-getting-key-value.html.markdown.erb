@@ -17,16 +17,16 @@ lookup the value [and boom goes the dynamite](http://youtu.be/W45DRy7M1no).
 **Hash:**
 
 ```
-ProductIterationView = { product1: $1, product2: $2 }
+Products = { product1: '$1', product2: '$2' }
 ```
 
 **View:**
 
 ```
 <ul>
-  <li data-foreach-product="products" data-view="ProductIterationView">
+  <li data-foreach-product="Products">
     <span data-bind="product"></span>
-    <span data-bind="ProductIterationView['product']"></span>
+    <span data-bind="Products[product]"></span>
   </li>
 </ul>
 ```
@@ -35,9 +35,13 @@ ProductIterationView = { product1: $1, product2: $2 }
 
 ```
 <ul>
-  <li data-foreach-product="products" data-view="ProductIterationView">
+  <li>
     <span data-bind="product">product1</span>
-    <span data-bind="ProductIterationView['product']">$1</span>
+    <span data-bind="Products[product]">$1</span>
+  </li>
+  <li>
+    <span data-bind="product">product2</span>
+    <span data-bind="Products[product]">$2</span>
   </li>
 </ul>
 ```
