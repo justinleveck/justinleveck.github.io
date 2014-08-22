@@ -1,0 +1,38 @@
+---
+title: Batman.js conditionally add dynamic class attributes
+date: 2014-08-22 01:17 UTC
+tags: batman.js, data-addClass, data-removeClass, dashing
+---
+
+I learned something new today working with Batman.js. I needed to add a
+dynamic class attribute conditionally. According to the documention there are
+a couple of data
+[bindings](http://batmanjs.org/docs/api/batman.view_bindings.html) to help
+acheive this -- `data-addClass` and `data-removeClass`.
+
+I later learned (on the #batmanjs freenode irc channel) filters can be used to
+add conditional logic. As it turns out there are a couple
+[filters](http://batmanjs.org/docs/api/batman.view_filters.html) that apply to
+this task -- `equals`, `eq`, and `neq`. However the only filter that seems to
+work with the above data bindings is `equals`.
+
+Putting this all together, here is an example of how to add a class of `error`
+if the key does not equal `'OK'` as follows:
+
+**Hash**
+
+```
+status = { lax: 'OK' }
+```
+
+**View**
+
+```
+<div class="error" data-removeClass-error="data.lax | equals 'OK'"></div>
+```
+
+**Output**
+
+```
+<div class=" " data-removeclass-error="data.lax | equals 'OK'"></div>
+```
