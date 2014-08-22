@@ -22,17 +22,17 @@ if the key does not equal `'OK'` as follows:
 **Hash**
 
 ```
-data = { lax: 'OK' }
+status = { lax: 'OK' }
 ```
 
 **View**
 
 ```
-<div class="error" data-removeClass-error="data.lax | equals 'OK'"></div>
+<div class="error" data-removeClass-error="status.lax | equals 'OK'"></div>
 ```
 
 **Output**
 
 ```
-<div class=" " data-removeclass-error="data.lax | equals 'OK'"></div>
+<div class=" " data-removeclass-error="status.lax | equals 'OK'"></div>
 ```
