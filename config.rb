@@ -41,7 +41,7 @@ activate :blog do |blog|
 end
 
 # Required
-set :blog_url, 'http://www.justinleveck.com'
+set :blog_url, 'http://blog.justinleveck.com'
 set :blog_name, 'Justin Leveck'
 set :blog_description, ''
 set :author_name, 'Justin Leveck'
