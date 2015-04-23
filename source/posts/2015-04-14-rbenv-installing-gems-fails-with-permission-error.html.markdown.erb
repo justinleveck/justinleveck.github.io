@@ -7,7 +7,7 @@ tags: rbenv, ruby, osx
 Helping a new dev setup their machine today with `rbenv` when trying to
 `bundle` I ran into this error:
 
-```
+```bash
 ERROR:  While executing gem ... (Gem::FilePermissionError)
 You don't have write permissions for the /Library/Ruby/Gems/2.0.0 directory.
 ```
@@ -35,7 +35,7 @@ This should output a directory you do not have permissions to:
 
 The first line of the output is the line you need to copy over to your profile:
 
-```
+```bash
     export PATH="/Users/justin/.rbenv/shims:${PATH}" #path that needs to be copied
     source "/usr/local/Cellar/rbenv/0.4.0/libexec/../completions/rbenv.zsh"
     rbenv rehash 2>/dev/null
