@@ -9,7 +9,7 @@ EXPOSE 80
 # Install the necessary gems
 ADD Gemfile /srv/www/Gemfile
 ADD Gemfile.lock /srv/www/Gemfile.lock
-RUN bundle install --without development test
+RUN bundle install
 RUN bundle exec middleman build
 
 CMD nginx
