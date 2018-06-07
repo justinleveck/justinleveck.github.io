@@ -114,8 +114,11 @@ defaults:
     layout: "post"
 
 deploy:
-  - echo "hello world"
-
+  - cd .. && jekyll build
+  - touch .nojekyll
+  - rm -rf ../../build/*
+  - cp -r * ../../build
+  - cd ../../build && git add . && git commit -m "Automated deploy" && git push
 
 # # CONTENTFUL
 # collections_dir: collections
