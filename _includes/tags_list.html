@@ -2,7 +2,9 @@
 <footer>
   <div class="tags">
     {% for tag in include.tags %}
-    <a class="tag" href="{{site.baseurl}}/tags#{{tag}}">#{{tag}}</a>
+      <i class="fa fa-tag fa-5">
+        <a class="tag" href="{% tag_url tag %}">{{tag | remove: "," }}</a>
+      </i>
     {% endfor %}
   </div>
 </footer>

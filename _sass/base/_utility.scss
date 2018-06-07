@@ -14,6 +14,15 @@
     padding: $padding-small;
   }
 }
+%padding-medium {
+  padding: $padding-small * 0.5 $padding-large;
+  @media (max-width: 1000px) {
+    padding: $padding-small * 1.5 $padding-large / 1.6;
+  }
+  @media (max-width: 576px) {
+    padding: $padding-small * 0.5 16px;
+  }
+}
 // Buttons
 .button {
   border-radius: 0.3em;
@@ -21,6 +30,7 @@
   display: inline-block;
   margin: 1em 0;
   padding: 0.5em 0.75em;
+  transition: all 0.3s ease 0s;
 }
 a.button {
   @extend .button-link;

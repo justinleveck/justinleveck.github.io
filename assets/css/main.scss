@@ -1,4 +1,108 @@
 ---
 ---
 
-@import "type-theme";
+@import 'type-theme';
+header.site-custom-header {
+  background-position-y: 65%;
+  padding: 0.5em;
+  a {
+    color: white;
+  }
+  .fa,
+  .social-media a {
+    display: inline-block;
+    height: 75px;
+    width: 75px;
+  }
+  .fa {
+    font-size: 75px;
+    margin-right: 25px;
+    text-decoration: none;
+  }
+  .social-media * {
+    color: white;
+    margin-top: 0.25rem;
+    text-decoration: none;
+  }
+  .title {
+    position: relative;
+    padding: 8px;
+    margin: 10px 0 10px 0;
+    font-size: 3.5rem;
+    letter-spacing: -1px;
+    font-weight: bold;
+    font-family: 'Open Sans', sans-serif;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+  }
+}
+
+@media screen and (max-width: 500px) {
+  header.site-custom-header {
+    .title {
+      font-size: 3rem;
+    }
+    .fa,
+    .social-media a {
+      display: inline-block;
+      height: 60px;
+      width: 60px;
+    }
+    .fa {
+      font-size: 60px;
+      margin-right: 20px;
+      text-decoration: none;
+    }
+  }
+  .posts header h1,
+  article header h1 {
+    font-size: 2.5rem;
+    line-height: 2.5rem;
+    margin-bottom: 1rem;
+  }
+}
+header.tag-header {
+  @extend .site-custom-header;
+  .title {
+    font-family: 'Calibre', -apple-system, BlinkMacSystemFont, 'Avenir Next',
+      'Avenir', 'Segoe UI', 'Lucida Grande', 'Helvetica Neue', 'Helvetica',
+      'Fira Sans', 'Roboto', 'Noto', 'Droid Sans', 'Cantarell', 'Oxygen',
+      'Ubuntu', 'Franklin Gothic Medium', 'Century Gothic', 'Liberation Sans',
+      sans-serif;
+  }
+  @media screen and (max-width: 500px) {
+    .title {
+      margin: 20px 0;
+    }
+  }
+}
+.flex {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+.flex-center {
+  align-items: center;
+  justify-content: center;
+}
+.thumbnails {
+  display: flex;
+  flex-flow: column;
+  margin: 0px;
+  margin-bottom: 30px;
+  padding: 0px;
+}
+.thumbnails-row {
+  display: flex;
+  flex-flow: column;
+  flex-direction: row;
+  li + li {
+    margin-left: 5px;
+  }
+}
+.thumbnails {
+  li {
+    list-style-type: none;
+  }
+}

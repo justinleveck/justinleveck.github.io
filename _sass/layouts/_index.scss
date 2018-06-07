@@ -1,13 +1,37 @@
 // Header text feature
+.layout_home {
+  @media screen and (min-width: 500px) {
+    .call-out {
+      display: flex;
+      padding: 4em 0;
+      justify-content: center;
+
+      header {
+        align-items: center;
+        display: flex;
+        flex-flow: column;
+        align-self: vertical-align;
+        padding: 0;
+      }
+    }
+  }
+}
+
 .call-out {
-  @extend %padding-regular;
+  @extend %padding-medium;
   display: inline-block;
   width: 100%;
   background-color:$header-desc-background-color;
   background-size: cover;
+  background-position-y: 57%;
   font-size: 1.2em;
   text-align: center;
   color: $header-desc-text-color;
+}
+@media screen and (max-width: 500px) {
+  .call-out {
+    background-position-y: 20%;
+  }
 }
 .call-out p:last-child {
   margin-bottom: 0;
@@ -18,7 +42,7 @@
 // Post listing
 .posts {
   .post-teaser {
-    @extend %padding-regular;
+    @extend %padding-medium;
     width: 100%;
     margin-bottom: 0;
     display: inline-block;
@@ -30,19 +54,5 @@
   }
   .excerpt {
     margin-top: 1em;
-  }
-}
-// Pagination
-.pagination .button {
-  margin: 0 1.5em;
-  i {
-    vertical-align: middle;
-  }
-}
-.pagination {
-  padding: $padding-small $padding-large 0 $padding-large;
-  text-align: center;
-  @media (max-width: 600px) {
-    padding: $padding-small;
   }
 }

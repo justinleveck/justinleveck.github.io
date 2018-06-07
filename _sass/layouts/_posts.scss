@@ -4,7 +4,7 @@
 article,
 .comments {
   @extend %padding-regular;
-  border-bottom: 1px solid $border-color;
+  // border-bottom: 1px solid $border-color;
   float: left;
   width: 100%;
 }
@@ -35,6 +35,7 @@ header {
   font-size: 0.9em;
   letter-spacing: 0.1em;
   margin: 0;
+  margin-top: 0.5em;
   text-transform: uppercase;
 }
 .feature-image {

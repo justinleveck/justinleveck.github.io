@@ -3,7 +3,27 @@
 {% endif %}
 
 {% if site.theme_settings.footer_text %}
-<footer class="site-footer">
-	<p class="text">{{ site.theme_settings.footer_text }}</p>
-</footer>
+	{% comment %}
+		<footer class="site-footer">
+			<p class="text">{{ site.theme_settings.footer_text }}</p>
+		</footer>
+	{% endcomment %}
 {% endif %}
+<footer class="site-footer">
+	<a class="subscribe icon-feed" href="/feed.xml">
+		<i class="fas fa-rss-square">
+			<span class="tooltip">Subscribe!</span>
+		</i>
+	</a>
+	<div class="inner">
+		<section class="copyright">
+			All content copyright
+			<a href="/">Justin Leveck</a>
+			© 2018 • All rights reserved.
+		</section>
+		<section class="poweredby">
+			Proudly published with
+			<a href="https://jekyllrb.com">Jekyll</a>
+		</section>
+	</div>
+</footer>

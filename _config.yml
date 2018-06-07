@@ -1,11 +1,11 @@
 # SITE CONFIGURATION
-baseurl: "/type-theme"
-url: "https://rohanchandra.github.io/"
+baseurl: ""
+url: ""
 
 # THEME-SPECIFIC CONFIGURATION
 theme_settings:
   # Meta
-  title: Type Theme
+  title: Justin Leveck
   avatar: assets/img/avatar.png
   favicon: assets/favicon.ico
   gravatar: # Email MD5 hash
@@ -13,12 +13,32 @@ theme_settings:
 
   # Header and footer text
   header_text: >
-     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-
-     <p>Remove all header text in <code>_config.yml</code> to disable this feature.</p>
-  header_text_feature_image:
+    <header class="site-custom-header">
+      <a class="blog-logo" href="/">
+        <span class="title">Justin Leveck</span>
+      </a>
+      <div class="social-media">
+        <a href="https://github.com/justinleveck" target="_new">
+          <i class="fa fa-github"></i>
+        </a>
+        <a href="https://twitter.com/justinleveck" target="_new">
+          <i class="fa fa-twitter"></i>
+        </a>
+        <a href="/resume">
+          <i class="fa fa-user"></i>
+        </a>
+      </div>
+    </header>
+  header_text_feature_image: assets/img/crystal-cove.jpg
   footer_text: >
-   Powered by <a href="https://jekyllrb.com/">Jekyll</a> with <a href="https://github.com/rohanchandra/type-theme">Type Theme</a>
+    <div class="inner">
+      <section class="copyright">
+        All content copyright <a href="/">Justin Leveck</a> © 2018 • All rights reserved.
+      </section>
+      <section class="poweredby">
+        Powered by <a href="https://jekyllrb.com/">Jekyll</a>
+      </section>
+    </div>
 
   # Icons
   rss: false
@@ -64,13 +84,12 @@ theme_settings:
   # Colours, typography and padding
   # Open the "_sass > base" folder, and open "_variables.scss"
   google_fonts: "Source+Sans+Pro:400,700,700italic,400italic"
-
   # Post navigation
   post_navigation: false
 
 # PAGINATION
 paginate: 5
-paginate_path: "blog/page:num"
+paginate_path: /page:num
 
 # BUILD SETTINGS
 markdown: kramdown
@@ -78,8 +97,46 @@ highlighter: rouge
 sass:
   sass_dir: _sass
   style: :compressed
-plugins: [jekyll-paginate]
+plugins:
+  - jekyll-feed
+  - jekyll-redirect-from
+  # - jekyll-contentful
 theme: jekyll-theme-type
 exclude:
   - Gemfile
   - Gemfile.lock
+permalink: /:slug
+
+defaults:
+- scope:
+    path: ""
+  values:
+    layout: "post"
+
+# # CONTENTFUL
+# collections_dir: collections
+
+# collections:
+#   posts:
+#     output: true
+#     permalink: /:slug
+
+# contentful:
+#   content_types:
+#     posts:
+#       id: post
+#       body: body
+#       filename: "{{ publish_date | date: '%Y-%m-%d' }}-{{ slug }}"
+#       frontmatter:
+#         entry_mappings:
+#           title: title
+#           # image: image/url
+#           # author: author/full_name
+#           # topic: category/title
+#           # date: published_at
+#           date: publish_date
+#           slug: slug
+#           tags: tags
+#         other:
+#           layout: post
+#           draft: false

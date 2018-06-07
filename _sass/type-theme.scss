@@ -1,6 +1,6 @@
 // External
 @import 'external/reset';
-@import 'external/syntax';
+//@import 'external/syntax';
 
 // Base
 @import 'base/variables';
@@ -12,9 +12,60 @@
 @import 'layouts/index';
 @import 'layouts/tags';
 @import 'layouts/search';
+@import 'layouts/404';
 
 // Partials
 @import 'includes/header';
 @import 'includes/footer';
+@import 'includes/fonts';
 @import 'includes/tag_list';
 @import 'includes/post_nav';
+@import 'includes/code';
+@import 'includes/pagination';
+
+@import "font-awesome/scss/font-awesome.scss";
+@import "font-awesome/scss/fa-solid.scss";
+
+.site-nav {
+  display: none;
+}
+
+body {
+  color: #454547;
+  font-family: "Calibre", -apple-system, BlinkMacSystemFont, "Avenir Next", "Avenir", "Segoe UI", "Lucida Grande", "Helvetica Neue", "Helvetica", "Fira Sans", "Roboto", "Noto", "Droid Sans", "Cantarell", "Oxygen", "Ubuntu", "Franklin Gothic Medium", "Century Gothic", "Liberation Sans", sans-serif;
+  font-size: 1.4rem;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.9rem
+}
+
+.excerpt a.button {
+  display: none;
+}
+
+p {
+  margin: 0 0 1.71rem;
+}
+
+hr {
+  border-bottom: 1px solid #b5b5c0;
+  border-left: 0;
+  border-right: 0;
+  border-top: 0;
+  margin: 1.7rem auto;
+  width: 80%;
+}
+
+a, a:link, a:active, a:visited {
+  transition: color 0.25s ease-out;
+ -webkit-transition: color 0.25s ease-out;
+ -moz-transition: color 0.25s ease-out;
+ -o-transition: color 0.25s ease-out;
+ }
+
+a:hover {
+  color: #57A3E8;
+}
+
+.resume {
+  height: 1000px;
+}

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html class="no-js">
   {% include head.html %}
-  <body>
-    {% include header.html %}
+
+  <body class="{% body_class %}" >
+    {% include post_header.html %}
     <div class="content">
       {{ content }}
     </div>
