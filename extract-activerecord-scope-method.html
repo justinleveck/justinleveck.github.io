@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>Extract ActiveRecord Scope Method | Justin Leveck</title>
+	<meta name="description" content="Peer review today lead to a great refactoring opportunity. The pull requestcentered around allowing signed in site administrators to view unpublished blogposts.">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="/extract-activerecord-scope-method">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="Justin Leveck" href="/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet" type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+
+
+  <body class=" url_extract_activerecord_scope_method tags_rails, tags_extract tags_method, tags_refactoring layout_post" >
+    
+  
+    
+  <div class="call-out"
+  style="background-image: url('/assets/img/crystal-cove.jpg')">
+    <header class="site-custom-header">
+  <a class="blog-logo" href="/">
+    <span class="title">Justin Leveck</span>
+  </a>
+  <div class="social-media">
+    <a href="https://github.com/justinleveck" target="_new">
+      <i class="fa fa-github"></i>
+    </a>
+    <a href="https://twitter.com/justinleveck" target="_new">
+      <i class="fa fa-twitter"></i>
+    </a>
+    <a href="/resume">
+      <i class="fa fa-user"></i>
+    </a>
+  </div>
+</header>
+
+  </div>
+
+  
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/')">
+    <h1 class="title">Extract ActiveRecord Scope Method</h1>
+    
+    <p class="meta">
+      November 18, 2015
+      
+      
+<footer>
+  <div class="tags">
+    
+      <i class="fa fa-tag fa-5">
+        <a class="tag" href="/tags/rails/">rails</a>
+      </i>
+    
+      <i class="fa fa-tag fa-5">
+        <a class="tag" href="/tags/extract/">extract</a>
+      </i>
+    
+      <i class="fa fa-tag fa-5">
+        <a class="tag" href="/tags/method/">method</a>
+      </i>
+    
+      <i class="fa fa-tag fa-5">
+        <a class="tag" href="/tags/refactoring/">refactoring</a>
+      </i>
+    
+  </div>
+</footer>
+
+
+    </p>
+  </header>
+  <section class="post-content"><p>Peer review today lead to a great refactoring opportunity. The pull request
+centered around allowing signed in site administrators to view unpublished blog
+posts.</p>
+
+<p><strong>Original</strong></p>
+
+<p>My goal here is to only have the <code class="highlighter-rouge">published</code> scope apply if the <code class="highlighter-rouge">current_user</code>
+is not an administrator in both the <code class="highlighter-rouge">index</code> and <code class="highlighter-rouge">blog_post</code> actions.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">BlogController</span> <span class="o">&lt;</span> <span class="no">SiteController</span>
+
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="vi">@blog_posts</span> <span class="o">=</span> <span class="n">blog</span><span class="p">.</span><span class="nf">blog_posts</span><span class="p">.</span><span class="nf">published</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">blog_post</span>
+    <span class="vi">@blog_post</span> <span class="o">=</span> <span class="n">blog</span><span class="p">.</span><span class="nf">blog_posts</span><span class="p">.</span><span class="nf">published</span><span class="p">.</span><span class="nf">friendly</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+
+  <span class="k">def</span> <span class="nf">blog</span>
+    <span class="n">current_site</span><span class="p">.</span><span class="nf">blog</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong>Initial Attempt</strong></p>
+
+<p>My first attempt is not very clean in the <code class="highlighter-rouge">blog_post</code> action.</p>
+
+<ul>
+  <li>The intent is lost being spread across 3 lines</li>
+  <li>The <code class="highlighter-rouge">current_user.try(:administrator?)</code> logic is duplicated across two
+actions</li>
+</ul>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">BlogController</span> <span class="o">&lt;</span> <span class="no">SiteController</span>
+
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="k">if</span> <span class="n">current_user</span><span class="p">.</span><span class="nf">try</span><span class="p">(</span><span class="ss">:administrator?</span><span class="p">)</span>
+      <span class="vi">@blog_posts</span> <span class="o">=</span> <span class="n">blog</span><span class="p">.</span><span class="nf">blog_posts</span>
+    <span class="k">else</span>
+      <span class="vi">@blog_posts</span> <span class="o">=</span> <span class="n">blog</span><span class="p">.</span><span class="nf">blog_posts</span><span class="p">.</span><span class="nf">published</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">blog_post</span>
+    <span class="n">blog_posts</span> <span class="o">=</span> <span class="n">blog</span><span class="p">.</span><span class="nf">blog_posts</span>
+    <span class="n">blog_posts</span> <span class="o">=</span> <span class="n">blog_posts</span><span class="p">.</span><span class="nf">published</span> <span class="k">unless</span> <span class="n">current_user</span><span class="p">.</span><span class="nf">try</span><span class="p">(</span><span class="ss">:administrator?</span><span class="p">)</span>
+    <span class="vi">@blog_post</span> <span class="o">=</span> <span class="n">blog_posts</span><span class="p">.</span><span class="nf">friendly</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+
+  <span class="k">def</span> <span class="nf">blog</span>
+    <span class="n">current_site</span><span class="p">.</span><span class="nf">blog</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+</code></pre></div></div>
+
+<p><strong>Refactor</strong></p>
+
+<p>And now for the refactor. Here you can see how this really cleaned up.</p>
+
+<p>The <code class="highlighter-rouge">ActiveRecord</code> scope has been extracted to a private method named
+<code class="highlighter-rouge">blog_posts_scope</code></p>
+
+<p>This extracted scope can now be used in the <code class="highlighter-rouge">index</code> and <code class="highlighter-rouge">blog_post</code> actions and
+it gets rid of the logic duplication to determine if the <code class="highlighter-rouge">current_user</code> is an
+administrator.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">BlogController</span> <span class="o">&lt;</span> <span class="no">SiteController</span>
+
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="vi">@blog_posts</span> <span class="o">=</span> <span class="n">blog_posts_scope</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">blog_post</span>
+    <span class="vi">@blog_post</span> <span class="o">=</span> <span class="n">blog_posts_scope</span><span class="p">.</span><span class="nf">friendly</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+
+  <span class="k">def</span> <span class="nf">blog_posts_scope</span>
+    <span class="k">if</span> <span class="n">current_user</span><span class="p">.</span><span class="nf">try</span><span class="p">(</span><span class="ss">:administrator?</span><span class="p">)</span>
+      <span class="n">blog</span><span class="p">.</span><span class="nf">blog_posts</span>
+    <span class="k">else</span>
+      <span class="n">blog</span><span class="p">.</span><span class="nf">blog_posts</span><span class="p">.</span><span class="nf">published</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">blog</span>
+    <span class="n">current_site</span><span class="p">.</span><span class="nf">blog</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Peer reviews and refactoring techniques for the win!</p>
+</section>
+</article>
+
+<!-- Disqus -->
+
+
+<!-- Post navigation -->
+
+
+    </div>
+    
+<script src="/assets/js/katex_init.js"></script>
+
+
+
+<footer class="site-footer">
+	<a class="subscribe icon-feed" href="/feed.xml">
+		<i class="fas fa-rss-square">
+			<span class="tooltip">Subscribe!</span>
+		</i>
+	</a>
+	<div class="inner">
+		<section class="copyright">
+			All content copyright
+			<a href="/">Justin Leveck</a>
+			© 2018 • All rights reserved.
+		</section>
+		<section class="poweredby">
+			Proudly published with
+			<a href="https://jekyllrb.com">Jekyll</a>
+		</section>
+	</div>
+</footer>
+  </body>
+</html>

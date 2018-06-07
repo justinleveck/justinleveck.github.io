@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>Deploying Middleman to GitHub Pages | Justin Leveck</title>
+	<meta name="description" content="Today I began using GitHub Pages to host my blog. It is created using Middleman – a static site generator. I followed the guide provided by GitHub but it lef...">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="/deploying-middleman-to-github-pages">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="Justin Leveck" href="/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet" type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+
+
+  <body class=" url_deploying_middleman_to_github_pages tags_middleman, tags_github_pages layout_post" >
+    
+  
+    
+  <div class="call-out"
+  style="background-image: url('/assets/img/crystal-cove.jpg')">
+    <header class="site-custom-header">
+  <a class="blog-logo" href="/">
+    <span class="title">Justin Leveck</span>
+  </a>
+  <div class="social-media">
+    <a href="https://github.com/justinleveck" target="_new">
+      <i class="fa fa-github"></i>
+    </a>
+    <a href="https://twitter.com/justinleveck" target="_new">
+      <i class="fa fa-twitter"></i>
+    </a>
+    <a href="/resume">
+      <i class="fa fa-user"></i>
+    </a>
+  </div>
+</header>
+
+  </div>
+
+  
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/')">
+    <h1 class="title">Deploying Middleman to GitHub Pages</h1>
+    
+    <p class="meta">
+      June 6, 2014
+      
+      
+<footer>
+  <div class="tags">
+    
+      <i class="fa fa-tag fa-5">
+        <a class="tag" href="/tags/middleman/">middleman</a>
+      </i>
+    
+      <i class="fa fa-tag fa-5">
+        <a class="tag" href="/tags/github-pages/">github-pages</a>
+      </i>
+    
+  </div>
+</footer>
+
+
+    </p>
+  </header>
+  <section class="post-content"><p>Today I began using <a href="https://pages.github.com/">GitHub Pages</a> to host my blog. It is created using Middleman – a static site generator. I followed the guide provided by GitHub but it left out a few details so here is a tutorial on how to setup GitHub Pages, a custom domain, and Middleman deploys.</p>
+
+<h3 id="setting-up-github-pages">Setting up GitHub Pages</h3>
+
+<ol>
+  <li>Create a repository using the format requested by GitHub where <code class="highlighter-rouge">username</code> is your GitHub username.
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> username.github.io
+</code></pre></div>    </div>
+  </li>
+  <li>Create a branch called <code class="highlighter-rouge">source</code> and place your source files there. GitHub Pages requires that your static files be placed in <code class="highlighter-rouge">master</code>.
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> git checkout -b source
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h3 id="setup-custom-domain-with-github-pages">Setup custom domain with GitHub Pages</h3>
+
+<p>As outlined by the <a href="https://help.github.com/articles/setting-up-a-custom-domain-with-github-pages">GitHub documentation</a></p>
+
+<ol>
+  <li>Create a <code class="highlighter-rouge">CNAME</code> file with your custom domain in the source directory of your source branch.
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> blog.justinleveck.com
+</code></pre></div>    </div>
+    <p>I decided to go with using a <b><a href="https://help.github.com/articles/setting-up-a-custom-domain-with-github-pages">custom subdomain</a></b> for the various reasons provided by GitHub which include access to their CDN, being immune to changes in IP addresses for GitHub, and faster load times.</p>
+  </li>
+  <li>Configure a CNAME record with your DNS provider.</li>
+  <li>Disable Jekyl processing by creating <code class="highlighter-rouge">.nojekyll</code> in the source directory of your source branch.</li>
+</ol>
+
+<h3 id="setup-middleman-deploys">Setup Middleman Deploys</h3>
+
+<ol>
+  <li>Add <a href="https://github.com/karlfreeman/middleman-deploy">middleman-deploy</a> to your Gemfile
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> gem 'middleman-deploy'
+</code></pre></div>    </div>
+  </li>
+  <li>Run <code class="highlighter-rouge">bundle install</code></li>
+  <li>Activate the extension in <code class="highlighter-rouge">config.rb</code>
+    <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">activate</span> <span class="ss">:deploy</span> <span class="k">do</span> <span class="o">|</span><span class="n">deploy</span><span class="o">|</span>
+   <span class="n">deploy</span><span class="p">.</span><span class="nf">method</span> <span class="o">=</span> <span class="ss">:git</span>
+   <span class="n">deploy</span><span class="p">.</span><span class="nf">branch</span> <span class="o">=</span> <span class="s1">'master'</span>
+ <span class="k">end</span>
+</code></pre></div>    </div>
+  </li>
+  <li>To deploy to GitHub Pages, from the <code class="highlighter-rouge">source</code> branch run
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> middleman build
+ middleman deploy
+</code></pre></div>    </div>
+
+    <p>The statically generated files will be pushed to your remote master and live within a few minutes.</p>
+  </li>
+</ol>
+</section>
+</article>
+
+<!-- Disqus -->
+
+
+<!-- Post navigation -->
+
+
+    </div>
+    
+<script src="/assets/js/katex_init.js"></script>
+
+
+
+<footer class="site-footer">
+	<a class="subscribe icon-feed" href="/feed.xml">
+		<i class="fas fa-rss-square">
+			<span class="tooltip">Subscribe!</span>
+		</i>
+	</a>
+	<div class="inner">
+		<section class="copyright">
+			All content copyright
+			<a href="/">Justin Leveck</a>
+			© 2018 • All rights reserved.
+		</section>
+		<section class="poweredby">
+			Proudly published with
+			<a href="https://jekyllrb.com">Jekyll</a>
+		</section>
+	</div>
+</footer>
+  </body>
+</html>

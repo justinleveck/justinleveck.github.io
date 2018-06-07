@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>Batman.js conditionally add dynamic class attributes | Justin Leveck</title>
+	<meta name="description" content="I learned something new today working with Batman.js. I needed to add adynamic class attribute conditionally. According to the documentation there area coupl...">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="/batman-js-conditionally-add-dynamic-class-attributes">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="Justin Leveck" href="/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet" type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+
+
+  <body class=" url_batman_js_conditionally_add_dynamic_class_attributes tags_batman layout_post" >
+    
+  
+    
+  <div class="call-out"
+  style="background-image: url('/assets/img/crystal-cove.jpg')">
+    <header class="site-custom-header">
+  <a class="blog-logo" href="/">
+    <span class="title">Justin Leveck</span>
+  </a>
+  <div class="social-media">
+    <a href="https://github.com/justinleveck" target="_new">
+      <i class="fa fa-github"></i>
+    </a>
+    <a href="https://twitter.com/justinleveck" target="_new">
+      <i class="fa fa-twitter"></i>
+    </a>
+    <a href="/resume">
+      <i class="fa fa-user"></i>
+    </a>
+  </div>
+</header>
+
+  </div>
+
+  
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/')">
+    <h1 class="title">Batman.js conditionally add dynamic class attributes</h1>
+    
+    <p class="meta">
+      August 21, 2014
+      
+      
+<footer>
+  <div class="tags">
+    
+      <i class="fa fa-tag fa-5">
+        <a class="tag" href="/tags/batmanjs/">batman.js</a>
+      </i>
+    
+  </div>
+</footer>
+
+
+    </p>
+  </header>
+  <section class="post-content"><p>I learned something new today working with Batman.js. I needed to add a
+dynamic class attribute conditionally. According to the documentation there are
+a couple of data
+<a href="http://batmanjs.org/docs/api/batman.view_bindings.html">bindings</a> to help
+achieve this – <code class="highlighter-rouge">data-addClass</code> and <code class="highlighter-rouge">data-removeClass</code>.</p>
+
+<p>I later discovered (on the #batmanjs freenode irc channel) filters can be used to
+add conditional logic. As it turns out there are a couple
+<a href="http://batmanjs.org/docs/api/batman.view_filters.html">filters</a> that apply to
+this task – <code class="highlighter-rouge">equals</code>, <code class="highlighter-rouge">eq</code>, and <code class="highlighter-rouge">neq</code>. However the only filter that seems to
+work with the above data bindings is <code class="highlighter-rouge">equals</code>.</p>
+
+<p>Putting this all together, here is an example of how to use a class of <code class="highlighter-rouge">error</code>
+if the key does not equal <code class="highlighter-rouge">'OK'</code>.</p>
+
+<p>When the key <strong>does not</strong> equal <code class="highlighter-rouge">'OK'</code> the <code class="highlighter-rouge">error</code> class is <strong>not</strong> removed:</p>
+
+<p><strong>Hash</strong></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>status = { lax: 'ERROR' }
+</code></pre></div></div>
+
+<p><strong>View</strong></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;div class="error" data-removeClass-error="status.lax | equals 'OK'"&gt;&lt;/div&gt;
+</code></pre></div></div>
+
+<p><strong>Output</strong></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;div class="error" data-removeclass-error="status.lax | equals 'OK'"&gt;&lt;/div&gt;
+</code></pre></div></div>
+
+<hr />
+
+<p>When the key <strong>equals</strong> <code class="highlighter-rouge">'OK'</code> the <code class="highlighter-rouge">error</code> class <strong>is</strong> removed:</p>
+
+<p><strong>Hash</strong></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>status = { lax: 'OK' }
+</code></pre></div></div>
+
+<p><strong>View</strong></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;div class="error" data-removeClass-error="status.lax | equals 'OK'"&gt;&lt;/div&gt;
+</code></pre></div></div>
+
+<p><strong>Output</strong></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;div class=" " data-removeclass-error="status.lax | equals 'OK'"&gt;&lt;/div&gt;
+</code></pre></div></div>
+
+</section>
+</article>
+
+<!-- Disqus -->
+
+
+<!-- Post navigation -->
+
+
+    </div>
+    
+<script src="/assets/js/katex_init.js"></script>
+
+
+
+<footer class="site-footer">
+	<a class="subscribe icon-feed" href="/feed.xml">
+		<i class="fas fa-rss-square">
+			<span class="tooltip">Subscribe!</span>
+		</i>
+	</a>
+	<div class="inner">
+		<section class="copyright">
+			All content copyright
+			<a href="/">Justin Leveck</a>
+			© 2018 • All rights reserved.
+		</section>
+		<section class="poweredby">
+			Proudly published with
+			<a href="https://jekyllrb.com">Jekyll</a>
+		</section>
+	</div>
+</footer>
+  </body>
+</html>

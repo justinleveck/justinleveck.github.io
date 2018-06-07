@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>rbenv installing gems fails with permission error | Justin Leveck</title>
+	<meta name="description" content="Helping a new dev setup their machine today with rbenv when trying tobundle I ran into this error:">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="/rbenv-installing-gems-fails-with-permission-error">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="Justin Leveck" href="/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet" type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+
+
+  <body class=" url_rbenv_installing_gems_fails_with_permission_error tags_rbenv, tags_ruby, tags_osx layout_post" >
+    
+  
+    
+  <div class="call-out"
+  style="background-image: url('/assets/img/crystal-cove.jpg')">
+    <header class="site-custom-header">
+  <a class="blog-logo" href="/">
+    <span class="title">Justin Leveck</span>
+  </a>
+  <div class="social-media">
+    <a href="https://github.com/justinleveck" target="_new">
+      <i class="fa fa-github"></i>
+    </a>
+    <a href="https://twitter.com/justinleveck" target="_new">
+      <i class="fa fa-twitter"></i>
+    </a>
+    <a href="/resume">
+      <i class="fa fa-user"></i>
+    </a>
+  </div>
+</header>
+
+  </div>
+
+  
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/')">
+    <h1 class="title">rbenv installing gems fails with permission error</h1>
+    
+    <p class="meta">
+      April 14, 2015
+      
+      
+<footer>
+  <div class="tags">
+    
+      <i class="fa fa-tag fa-5">
+        <a class="tag" href="/tags/rbenv/">rbenv</a>
+      </i>
+    
+      <i class="fa fa-tag fa-5">
+        <a class="tag" href="/tags/ruby/">ruby</a>
+      </i>
+    
+      <i class="fa fa-tag fa-5">
+        <a class="tag" href="/tags/osx/">osx</a>
+      </i>
+    
+  </div>
+</footer>
+
+
+    </p>
+  </header>
+  <section class="post-content"><p>Helping a new dev setup their machine today with <code class="highlighter-rouge">rbenv</code> when trying to
+<code class="highlighter-rouge">bundle</code> I ran into this error:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ERROR:  While executing gem ... <span class="o">(</span>Gem::FilePermissionError<span class="o">)</span>
+You don<span class="s1">'t have write permissions for the /Library/Ruby/Gems/2.0.0 directory.
+</span></code></pre></div></div>
+
+<p>Thankfully I already dealt with this before and referenced it as a comment to
+a question on StackOverflow. For my own future reference I will list the solution
+here as well.</p>
+
+<p><strong>You need to correct your paths</strong></p>
+
+<p>To determine if this fix will work run the following:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>which gem
+</code></pre></div></div>
+
+<p>This should output a directory you do not have permissions to:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/usr/bin/gem
+</code></pre></div></div>
+
+<p><strong>To fix this perform the following steps.</strong></p>
+
+<ol>
+  <li>
+    <p>Determine the path you need to copy to your profile:</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rbenv init -
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>The first line of the output is the line you need to copy over to your profile:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">"/Users/justin/.rbenv/shims:</span><span class="k">${</span><span class="nv">PATH</span><span class="k">}</span><span class="s2">"</span> <span class="c">#path that needs to be copied</span>
+    <span class="nb">source</span> <span class="s2">"/usr/local/Cellar/rbenv/0.4.0/libexec/../completions/rbenv.zsh"</span>
+    rbenv rehash 2&gt;/dev/null
+    rbenv<span class="o">()</span> <span class="o">{</span>
+      <span class="nb">typeset command
+      command</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span>
+      <span class="k">if</span> <span class="o">[</span> <span class="s2">"$#"</span> <span class="nt">-gt</span> 0 <span class="o">]</span><span class="p">;</span> <span class="k">then
+        </span><span class="nb">shift
+      </span><span class="k">fi
+
+      case</span> <span class="s2">"</span><span class="nv">$command</span><span class="s2">"</span> <span class="k">in
+      </span>rehash|shell<span class="p">)</span>
+        <span class="nb">eval</span> <span class="sb">`</span>rbenv <span class="s2">"sh-</span><span class="nv">$command</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$@</span><span class="s2">"</span><span class="sb">`</span><span class="p">;;</span>
+      <span class="k">*</span><span class="p">)</span>
+        <span class="nb">command </span>rbenv <span class="s2">"</span><span class="nv">$command</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$@</span><span class="s2">"</span><span class="p">;;</span>
+      <span class="k">esac</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<ol>
+  <li>
+    <p>Copy the path to your profile and save it</p>
+  </li>
+  <li>
+    <p>Reload your profile (source ~/.zshenv for me)</p>
+  </li>
+  <li>
+    <p>Run <code class="highlighter-rouge">rbenv rehash</code></p>
+  </li>
+</ol>
+
+<p>Now when you run <code class="highlighter-rouge">which gem</code> you should get a local path that you have permissions to:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/Users/justin/.rbenv/shims/gem
+</code></pre></div></div>
+</section>
+</article>
+
+<!-- Disqus -->
+
+
+<!-- Post navigation -->
+
+
+    </div>
+    
+<script src="/assets/js/katex_init.js"></script>
+
+
+
+<footer class="site-footer">
+	<a class="subscribe icon-feed" href="/feed.xml">
+		<i class="fas fa-rss-square">
+			<span class="tooltip">Subscribe!</span>
+		</i>
+	</a>
+	<div class="inner">
+		<section class="copyright">
+			All content copyright
+			<a href="/">Justin Leveck</a>
+			© 2018 • All rights reserved.
+		</section>
+		<section class="poweredby">
+			Proudly published with
+			<a href="https://jekyllrb.com">Jekyll</a>
+		</section>
+	</div>
+</footer>
+  </body>
+</html>

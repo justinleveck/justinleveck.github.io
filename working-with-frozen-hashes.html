@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>Working with Frozen Hashes | Justin Leveck</title>
+	<meta name="description" content="I discovered a cool method today while working with a frozen hash containing afrozen array.">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="/working-with-frozen-hashes">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="Justin Leveck" href="/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet" type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+
+
+  <body class=" url_working_with_frozen_hashes tags_ruby, tags_hash, tags_deep_dup layout_post" >
+    
+  
+    
+  <div class="call-out"
+  style="background-image: url('/assets/img/crystal-cove.jpg')">
+    <header class="site-custom-header">
+  <a class="blog-logo" href="/">
+    <span class="title">Justin Leveck</span>
+  </a>
+  <div class="social-media">
+    <a href="https://github.com/justinleveck" target="_new">
+      <i class="fa fa-github"></i>
+    </a>
+    <a href="https://twitter.com/justinleveck" target="_new">
+      <i class="fa fa-twitter"></i>
+    </a>
+    <a href="/resume">
+      <i class="fa fa-user"></i>
+    </a>
+  </div>
+</header>
+
+  </div>
+
+  
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/')">
+    <h1 class="title">Working with Frozen Hashes</h1>
+    
+    <p class="meta">
+      December 1, 2015
+      
+      
+<footer>
+  <div class="tags">
+    
+      <i class="fa fa-tag fa-5">
+        <a class="tag" href="/tags/ruby/">ruby</a>
+      </i>
+    
+      <i class="fa fa-tag fa-5">
+        <a class="tag" href="/tags/hash/">hash</a>
+      </i>
+    
+      <i class="fa fa-tag fa-5">
+        <a class="tag" href="/tags/deep_dup/">deep_dup</a>
+      </i>
+    
+  </div>
+</footer>
+
+
+    </p>
+  </header>
+  <section class="post-content"><p>I discovered a cool method today while working with a frozen hash containing a
+frozen array.</p>
+
+<p><code class="highlighter-rouge">deep_dup</code></p>
+
+<p>From the <a href="http://apidock.com/rails/Hash/deep_dup">Rails API Documentation</a>:</p>
+
+<blockquote>
+  <p>Returns a deep copy of hash.</p>
+</blockquote>
+
+<blockquote>
+  <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nb">hash</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">a: </span><span class="p">{</span> <span class="ss">b: </span><span class="s1">'b'</span> <span class="p">}</span> <span class="p">}</span>
+ <span class="nb">dup</span>  <span class="o">=</span> <span class="nb">hash</span><span class="p">.</span><span class="nf">deep_dup</span>
+ <span class="nb">dup</span><span class="p">[</span><span class="ss">:a</span><span class="p">][</span><span class="ss">:c</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'c'</span>
+
+ <span class="nb">hash</span><span class="p">[</span><span class="ss">:a</span><span class="p">][</span><span class="ss">:c</span><span class="p">]</span> <span class="c1"># =&gt; nil</span>
+ <span class="nb">dup</span><span class="p">[</span><span class="ss">:a</span><span class="p">][</span><span class="ss">:c</span><span class="p">]</span>  <span class="c1"># =&gt; "c"&gt; </span>
+</code></pre></div>  </div>
+</blockquote>
+
+<p>Use of this method allowed for a nice refactor:</p>
+
+<p><strong>Before</strong></p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">SANITIZER</span> <span class="o">=</span> <span class="no">AppConfig</span><span class="p">.</span><span class="nf">sanitizer</span><span class="p">.</span><span class="nf">default</span><span class="p">.</span><span class="nf">dup</span>
+<span class="no">SANITIZER</span><span class="p">[</span><span class="ss">:elements</span><span class="p">]</span> <span class="o">=</span> <span class="no">SANITIZER</span><span class="p">[</span><span class="ss">:elements</span><span class="p">].</span><span class="nf">dup</span>
+<span class="no">SANITIZER</span><span class="p">[</span><span class="ss">:elements</span><span class="p">].</span><span class="nf">push</span> <span class="s2">"iframe"</span>
+</code></pre></div></div>
+
+<p><strong>After</strong></p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">SANITIZER</span> <span class="o">=</span> <span class="no">AppConfig</span><span class="p">.</span><span class="nf">sanitizer</span><span class="p">.</span><span class="nf">default</span><span class="p">.</span><span class="nf">deep_dup</span>
+<span class="no">SANITIZER</span><span class="p">[</span><span class="ss">:elements</span><span class="p">].</span><span class="nf">push</span> <span class="s2">"iframe"</span>
+</code></pre></div></div>
+</section>
+</article>
+
+<!-- Disqus -->
+
+
+<!-- Post navigation -->
+
+
+    </div>
+    
+<script src="/assets/js/katex_init.js"></script>
+
+
+
+<footer class="site-footer">
+	<a class="subscribe icon-feed" href="/feed.xml">
+		<i class="fas fa-rss-square">
+			<span class="tooltip">Subscribe!</span>
+		</i>
+	</a>
+	<div class="inner">
+		<section class="copyright">
+			All content copyright
+			<a href="/">Justin Leveck</a>
+			© 2018 • All rights reserved.
+		</section>
+		<section class="poweredby">
+			Proudly published with
+			<a href="https://jekyllrb.com">Jekyll</a>
+		</section>
+	</div>
+</footer>
+  </body>
+</html>

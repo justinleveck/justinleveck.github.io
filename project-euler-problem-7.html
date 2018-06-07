@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>Project Euler - Problem 7 | Justin Leveck</title>
+	<meta name="description" content="I recently applied to gSchool. The code I submitted was my answer to Problem 7 at Project Euler:">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="/project-euler-problem-7">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="Justin Leveck" href="/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet" type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+
+
+  <body class=" url_project_euler_problem_7 tags_project_euler, tags_ruby layout_post" >
+    
+  
+    
+  <div class="call-out"
+  style="background-image: url('/assets/img/crystal-cove.jpg')">
+    <header class="site-custom-header">
+  <a class="blog-logo" href="/">
+    <span class="title">Justin Leveck</span>
+  </a>
+  <div class="social-media">
+    <a href="https://github.com/justinleveck" target="_new">
+      <i class="fa fa-github"></i>
+    </a>
+    <a href="https://twitter.com/justinleveck" target="_new">
+      <i class="fa fa-twitter"></i>
+    </a>
+    <a href="/resume">
+      <i class="fa fa-user"></i>
+    </a>
+  </div>
+</header>
+
+  </div>
+
+  
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/')">
+    <h1 class="title">Project Euler - Problem 7</h1>
+    
+    <p class="meta">
+      July 6, 2013
+      
+      
+<footer>
+  <div class="tags">
+    
+      <i class="fa fa-tag fa-5">
+        <a class="tag" href="/tags/project-euler/">project-euler</a>
+      </i>
+    
+      <i class="fa fa-tag fa-5">
+        <a class="tag" href="/tags/ruby/">ruby</a>
+      </i>
+    
+  </div>
+</footer>
+
+
+    </p>
+  </header>
+  <section class="post-content"><p>I recently applied to <a href="http://www.gschool.it/">gSchool</a>. The code I submitted was my answer to Problem 7 at <a href="http://projecteuler.net/problem=7">Project Euler</a>:</p>
+
+<blockquote>
+  <p>By listing the first six prime numbers: 2, 3, 5, 7, 11, and 13, we can see that the 6th prime is 13.
+What is the 10,001st prime number?</p>
+</blockquote>
+
+<p>This was a fun problem to work on. Initially the method I wrote to test if a number (x) is prime involved testing each number that made up x. It resembled something like this:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">prime?</span> <span class="n">number</span>
+  <span class="k">return</span> <span class="kp">false</span> <span class="k">if</span> <span class="n">number</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">number</span> <span class="o">==</span> <span class="mi">1</span>
+  <span class="n">integers</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">..</span><span class="n">number</span><span class="p">)</span>
+  <span class="n">integers</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
+    <span class="k">return</span> <span class="kp">false</span> <span class="k">if</span> <span class="n">number</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span>
+  <span class="k">end</span>
+  <span class="kp">true</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Although this approach worked. It took far too long to compute. So I did some research on Wikipedia and came across an integer factorization called <a href="http://en.wikipedia.org/wiki/Trial_division">Trial division</a>. Incorporating this into the final solution below drastically reduced the time to compute the answer.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">prime?</span> <span class="n">number</span>
+  <span class="k">return</span> <span class="kp">false</span> <span class="k">if</span> <span class="n">number</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">number</span> <span class="o">==</span> <span class="mi">1</span>
+  <span class="n">integers</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">..</span><span class="no">Math</span><span class="p">.</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">number</span><span class="p">).</span><span class="nf">round</span><span class="p">)</span>
+  <span class="n">integers</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
+    <span class="k">return</span> <span class="kp">false</span> <span class="k">if</span> <span class="n">number</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span>
+  <span class="k">end</span>
+  <span class="kp">true</span>
+<span class="k">end</span>
+
+<span class="k">def</span> <span class="nf">findPrime</span> <span class="n">order</span>
+  <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="n">number</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="k">while</span> <span class="n">count</span> <span class="o">!=</span> <span class="n">order</span>
+      <span class="n">number</span> <span class="o">+=</span> <span class="mi">1</span>
+      <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">prime?</span> <span class="n">number</span>
+  <span class="k">end</span>
+  <span class="n">number</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+</section>
+</article>
+
+<!-- Disqus -->
+
+
+<!-- Post navigation -->
+
+
+    </div>
+    
+<script src="/assets/js/katex_init.js"></script>
+
+
+
+<footer class="site-footer">
+	<a class="subscribe icon-feed" href="/feed.xml">
+		<i class="fas fa-rss-square">
+			<span class="tooltip">Subscribe!</span>
+		</i>
+	</a>
+	<div class="inner">
+		<section class="copyright">
+			All content copyright
+			<a href="/">Justin Leveck</a>
+			© 2018 • All rights reserved.
+		</section>
+		<section class="poweredby">
+			Proudly published with
+			<a href="https://jekyllrb.com">Jekyll</a>
+		</section>
+	</div>
+</footer>
+  </body>
+</html>

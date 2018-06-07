@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>Embed Discourse Comments on Your Multi-Author Blog | Justin Leveck</title>
+	<meta name="description" content="Discourse now allows embedding comments on multi-author blogs. Previously onediscourse username was used to create all blog article topics created byDiscours...">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="/embed-discourse-comments-on-your-multi-author-blog">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="Justin Leveck" href="/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet" type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+
+
+  <body class=" url_embed_discourse_comments_on_your_multi_author_blog tags_discourse layout_post" >
+    
+  
+    
+  <div class="call-out"
+  style="background-image: url('/assets/img/crystal-cove.jpg')">
+    <header class="site-custom-header">
+  <a class="blog-logo" href="/">
+    <span class="title">Justin Leveck</span>
+  </a>
+  <div class="social-media">
+    <a href="https://github.com/justinleveck" target="_new">
+      <i class="fa fa-github"></i>
+    </a>
+    <a href="https://twitter.com/justinleveck" target="_new">
+      <i class="fa fa-twitter"></i>
+    </a>
+    <a href="/resume">
+      <i class="fa fa-user"></i>
+    </a>
+  </div>
+</header>
+
+  </div>
+
+  
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/')">
+    <h1 class="title">Embed Discourse Comments on Your Multi-Author Blog</h1>
+    
+    <p class="meta">
+      June 16, 2014
+      
+      
+<footer>
+  <div class="tags">
+    
+      <i class="fa fa-tag fa-5">
+        <a class="tag" href="/tags/discourse/">discourse</a>
+      </i>
+    
+  </div>
+</footer>
+
+
+    </p>
+  </header>
+  <section class="post-content"><p>Discourse now allows embedding comments on multi-author blogs. Previously one
+discourse username was used to create all blog article topics created by
+Discourse. This approach works well for single author blogs but not so well for
+multi-author ones. Since, topics are not created using the discourse username
+of the author, new comment author notifications are not automatically sent
+out.</p>
+
+<p>This led me to write the <a href="https://github.com/discourse/discourse/pull/2428">recently merged Discourse feature</a> that allows you to specify
+the author’s discourse username for each article published on a multi-author
+blog.</p>
+
+<p>Discourse has two methods for creating topics for blog posts</p>
+
+<ol>
+  <li>RSS or Atom feed</li>
+  <li>Readability algorithm</li>
+</ol>
+
+<p>When any forum users comment on the blog article forum topic the comment will
+appear on the blog as well.</p>
+
+<h2 id="configure-embedding">Configure embedding</h2>
+
+<ol>
+  <li>Install Discourse. It is preferred that you use <a href="https://github.com/discourse/discourse_docker">discourse_docker</a>.</li>
+  <li>Navigate to <em>Embedding Site Settings</em>
+http://discourse.yourdomain.com/<b>admin/site_settings/category/embedding</b></li>
+  <li>Configure the settings being sure to specify the following
+  <img src="/assets/img/discourse_embedding.png" alt="" /></li>
+  <li>In your blog template include the following JavaScript snippet and <code class="highlighter-rouge">&lt;div&gt;</code> tag where you would like comments to appear.
+    <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"discourse-comments"</span><span class="nt">&gt;&lt;/div&gt;</span>
+
+ <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
+   <span class="kd">var</span> <span class="nx">discourseUrl</span> <span class="o">=</span> <span class="s1">'http://blog.com/'</span><span class="p">,</span>
+       <span class="nx">discourseUserName</span> <span class="o">=</span> <span class="s1">'justin_leveck'</span><span class="p">,</span>
+       <span class="nx">discourseEmbedUrl</span> <span class="o">=</span> <span class="s1">'http://blog.com/2014/06/02/hello-world.html'</span><span class="p">;</span>
+
+   <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+     <span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">'script'</span><span class="p">);</span> <span class="nx">d</span><span class="p">.</span><span class="nx">type</span> <span class="o">=</span> <span class="s1">'text/javascript'</span><span class="p">;</span> <span class="nx">d</span><span class="p">.</span><span class="k">async</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span> <span class="nx">d</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="nx">discourseUrl</span> <span class="o">+</span> <span class="s1">'javascripts/embed.js'</span><span class="p">;</span>
+     <span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s1">'head'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s1">'body'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]).</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">d</span><span class="p">);</span>
+   <span class="p">})();</span>
+ <span class="nt">&lt;/script&gt;</span>
+</code></pre></div>    </div>
+    <p><strong>Caveats</strong></p>
+
+    <ol>
+      <li>Set <code class="highlighter-rouge">discourseUrl</code> so that it points to the root URL of your Discourse forum.</li>
+      <li>Set <code class="highlighter-rouge">discourseUserName</code> to author’s discourse username.</li>
+      <li>Set <code class="highlighter-rouge">discourseEmbedUrl</code> to the canonical URL of the page where you are embedding Discourse. This URL must be unique otherwise multiple topics for the same article will be created.</li>
+    </ol>
+  </li>
+  <li>Reload your blog to allow changes to take effect. Discourse will begin
+creating topics for your blog posts in your forum and comments should now
+be visible on your blog.</li>
+</ol>
+</section>
+</article>
+
+<!-- Disqus -->
+
+
+<!-- Post navigation -->
+
+
+    </div>
+    
+<script src="/assets/js/katex_init.js"></script>
+
+
+
+<footer class="site-footer">
+	<a class="subscribe icon-feed" href="/feed.xml">
+		<i class="fas fa-rss-square">
+			<span class="tooltip">Subscribe!</span>
+		</i>
+	</a>
+	<div class="inner">
+		<section class="copyright">
+			All content copyright
+			<a href="/">Justin Leveck</a>
+			© 2018 • All rights reserved.
+		</section>
+		<section class="poweredby">
+			Proudly published with
+			<a href="https://jekyllrb.com">Jekyll</a>
+		</section>
+	</div>
+</footer>
+  </body>
+</html>

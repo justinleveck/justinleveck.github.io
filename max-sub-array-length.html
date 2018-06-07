@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>Max Sub Array Length | Justin Leveck</title>
+	<meta name="description" content="I recently got a subscription to Leetcode.com. I found this challenge particularly challenging:">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="/max-sub-array-length">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="Justin Leveck" href="/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet" type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+
+
+  <body class=" url_max_sub_array_length tags_code_challenge layout_post" >
+    
+  
+    
+  <div class="call-out"
+  style="background-image: url('/assets/img/crystal-cove.jpg')">
+    <header class="site-custom-header">
+  <a class="blog-logo" href="/">
+    <span class="title">Justin Leveck</span>
+  </a>
+  <div class="social-media">
+    <a href="https://github.com/justinleveck" target="_new">
+      <i class="fa fa-github"></i>
+    </a>
+    <a href="https://twitter.com/justinleveck" target="_new">
+      <i class="fa fa-twitter"></i>
+    </a>
+    <a href="/resume">
+      <i class="fa fa-user"></i>
+    </a>
+  </div>
+</header>
+
+  </div>
+
+  
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/')">
+    <h1 class="title">Max Sub Array Length</h1>
+    
+    <p class="meta">
+      May 31, 2018
+      
+      
+<footer>
+  <div class="tags">
+    
+      <i class="fa fa-tag fa-5">
+        <a class="tag" href="/tags/code-challenge/">code-challenge</a>
+      </i>
+    
+  </div>
+</footer>
+
+
+    </p>
+  </header>
+  <section class="post-content"><p>I recently got a subscription to Leetcode.com. I found this challenge particularly challenging:</p>
+
+<h2 id="challenge">Challenge</h2>
+
+<p>Given an array nums and a target value k, find the maximum length of a subarray that sums to k. 
+If there isn’t one, return 0 instead.</p>
+
+<p>Note:
+The sum of the entire nums array is guaranteed to fit within the 32-bit signed integer range.</p>
+
+<h3 id="example-1">Example 1:</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Input: nums = [1, -1, 5, -2, 3], k = 3
+Output: 4 
+</code></pre></div></div>
+
+<p><strong>Explanation:</strong> The subarray [1, -1, 5, -2] sums to 3 and is the longest.</p>
+
+<h3 id="example-2">Example 2:</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Input: nums = [-2, -1, 2, 1], k = 1
+Output: 2 
+</code></pre></div></div>
+
+<p><strong>Explanation:</strong> The subarray [-1, 2] sums to 1 and is the longest.</p>
+
+<h3 id="solution">Solution:</h3>
+
+<p>When solving this challenge I made several mistakes. The challenge is asking us
+to determine the maximum sub-array length. Not the maximum sub-sequence length.
+A sub-array is contigous. This is a key note to solving the challenge.</p>
+
+<h4 id="first-attempt">First Attempt</h4>
+
+<p>In my first attempt I used a brute force algorithm. Where I determined every
+possible sub-array storing only the ones where the sum was equal to the given
+amount.</p>
+
+<p>This strategy proved to be very ineffecient. As it requires several iterations
+to determine the output.</p>
+
+<ol>
+  <li>First iteration determines every possible sub-array</li>
+  <li>Second iteration for every sub-array</li>
+  <li>Third iteration for the array of sub-arrays to determine the one with the longest length</li>
+</ol>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">max_sub_array_len</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>    
+  <span class="n">sub_arrays</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="n">nums</span><span class="p">.</span><span class="nf">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">num</span><span class="p">,</span> <span class="n">index</span><span class="o">|</span>    
+    <span class="n">slice_length</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">slice_length</span> <span class="o">&lt;=</span> <span class="n">nums</span><span class="p">.</span><span class="nf">length</span>
+      <span class="n">sub_array</span> <span class="o">=</span> <span class="n">nums</span><span class="p">.</span><span class="nf">slice</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">slice_length</span><span class="p">)</span>
+      <span class="n">sum</span> <span class="o">=</span> <span class="n">sub_array</span><span class="p">.</span><span class="nf">inject</span><span class="p">(:</span><span class="o">+</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">sum</span> <span class="o">==</span> <span class="n">k</span>
+        <span class="n">sub_arrays</span> <span class="o">&lt;&lt;</span> <span class="n">sub_array</span>
+      <span class="k">end</span>
+
+      <span class="n">slice_length</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="n">sub_arrays</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:length</span><span class="p">).</span><span class="nf">max</span> <span class="o">||</span> <span class="mi">0</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h4 id="second-attempt">Second Attempt</h4>
+
+<p>This soluion is far more efficient since we are iterating through the
+elements only once.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">max_sub_array_len</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+  <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="n">max_length</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="n">history</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span> <span class="o">=&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">}</span>
+
+  <span class="n">nums</span><span class="p">.</span><span class="nf">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">num</span><span class="p">,</span> <span class="n">index</span><span class="o">|</span>
+    <span class="n">sum</span> <span class="o">+=</span> <span class="n">num</span>
+    <span class="n">history</span><span class="p">[</span><span class="n">sum</span><span class="p">]</span> <span class="o">||=</span> <span class="n">index</span>
+
+    <span class="k">if</span> <span class="n">history</span><span class="p">[</span><span class="n">sum</span> <span class="o">-</span> <span class="n">k</span><span class="p">]</span>
+      <span class="n">max_length</span> <span class="o">=</span> <span class="p">[</span><span class="n">max_length</span><span class="p">,</span> <span class="n">index</span> <span class="o">-</span> <span class="n">history</span><span class="p">[</span><span class="n">sum</span> <span class="o">-</span> <span class="n">k</span><span class="p">]].</span><span class="nf">max</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="n">max_length</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>With this solution we iterate through <code class="highlighter-rouge">nums</code> and for every element we store the
+current sum and current index.</p>
+
+<p>Let’s walk through this solution given the following inputs.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nums = [1, 1, 5, -2, 3]
+k = 3
+</code></pre></div></div>
+
+<p>As we iterate through the <code class="highlighter-rouge">nums</code> the <code class="highlighter-rouge">sum</code> and <code class="highlighter-rouge">index</code> are as follows.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1  2  7   5  8  # sums
+1, 1, 5, -2, 3  # nums
+0  1  2   3  4  # index
+</code></pre></div></div>
+
+<p>We are trying to find the longest <code class="highlighter-rouge">sub_array</code> with a sum of 3. Given the <code class="highlighter-rouge">nums</code>
+input we are given there is only one <code class="highlighter-rouge">sub_array</code> with the sum of 3.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[5, -2]
+</code></pre></div></div>
+
+<p>When iterating over the nums it is at index <code class="highlighter-rouge">3</code> when iterating over <code class="highlighter-rouge">-2</code> we will
+determine the only correct <code class="highlighter-rouge">sub_array</code>.</p>
+
+<p><strong>Can you see why?</strong></p>
+
+<p>At index 3 we know the following:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sum = 5
+k = 3
+</code></pre></div></div>
+
+<p>We need to know if at any point a recorded sum is equal to the difference of sum
+and k (3). Let’s look at our table again. Ah, okay we can see that at index 1
+the sum was 2.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1  2  7   5  8  # sums
+1, 1, 5, -2, 3  # nums
+0  1  2   3  4  # index
+</code></pre></div></div>
+
+<p>So we know our <code class="highlighter-rouge">sub_array</code> must contain all elements to the left of our current
+element stopping before index 1.</p>
+
+<p>The correct <code class="highlighter-rouge">sub_array</code> is then <code class="highlighter-rouge">[5, -2]</code> with a sum equal to the <code class="highlighter-rouge">k</code> input of 3.
+And the correct <code class="highlighter-rouge">max_length</code> determined is 2.</p>
+
+</section>
+</article>
+
+<!-- Disqus -->
+
+
+<!-- Post navigation -->
+
+
+    </div>
+    
+<script src="/assets/js/katex_init.js"></script>
+
+
+
+<footer class="site-footer">
+	<a class="subscribe icon-feed" href="/feed.xml">
+		<i class="fas fa-rss-square">
+			<span class="tooltip">Subscribe!</span>
+		</i>
+	</a>
+	<div class="inner">
+		<section class="copyright">
+			All content copyright
+			<a href="/">Justin Leveck</a>
+			© 2018 • All rights reserved.
+		</section>
+		<section class="poweredby">
+			Proudly published with
+			<a href="https://jekyllrb.com">Jekyll</a>
+		</section>
+	</div>
+</footer>
+  </body>
+</html>

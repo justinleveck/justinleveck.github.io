@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>Batman.js data-foreach getting key value | Justin Leveck</title>
+	<meta name="description" content="Tasked with creating an internal dashboard we decided to go with Shopify’sDashing framework. However, I ran into a problem when using the data-foreachbinding...">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="/batman-js-data-foreach-getting-key-value">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="Justin Leveck" href="/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet" type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+
+
+  <body class=" url_batman_js_data_foreach_getting_key_value tags_batman layout_post" >
+    
+  
+    
+  <div class="call-out"
+  style="background-image: url('/assets/img/crystal-cove.jpg')">
+    <header class="site-custom-header">
+  <a class="blog-logo" href="/">
+    <span class="title">Justin Leveck</span>
+  </a>
+  <div class="social-media">
+    <a href="https://github.com/justinleveck" target="_new">
+      <i class="fa fa-github"></i>
+    </a>
+    <a href="https://twitter.com/justinleveck" target="_new">
+      <i class="fa fa-twitter"></i>
+    </a>
+    <a href="/resume">
+      <i class="fa fa-user"></i>
+    </a>
+  </div>
+</header>
+
+  </div>
+
+  
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/')">
+    <h1 class="title">Batman.js data-foreach getting key value</h1>
+    
+    <p class="meta">
+      August 20, 2014
+      
+      
+<footer>
+  <div class="tags">
+    
+      <i class="fa fa-tag fa-5">
+        <a class="tag" href="/tags/batmanjs/">batman.js</a>
+      </i>
+    
+  </div>
+</footer>
+
+
+    </p>
+  </header>
+  <section class="post-content"><p>Tasked with creating an internal dashboard we decided to go with Shopify’s
+Dashing framework. However, I ran into a problem when using the <code class="highlighter-rouge">data-foreach</code>
+binding to iterate over a hash where I needed to access both the <code class="highlighter-rouge">key</code> and the
+<code class="highlighter-rouge">value</code>. Unable to find the solution in the documentation or online I turned
+to the batmanjs freenode irc channel.As it turns out the solution is very
+simple.</p>
+
+<p>The <code class="highlighter-rouge">data-foreach</code> binding iterates over the keys. Use the key to
+lookup the value <a href="http://youtu.be/W45DRy7M1no">and boom goes the dynamite</a>.</p>
+
+<p><strong>Hash:</strong></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Products = { product1: '$1', product2: '$2' }
+</code></pre></div></div>
+
+<p><strong>View:</strong></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;ul&gt;
+  &lt;li data-foreach-product="Products"&gt;
+    &lt;span data-bind="product"&gt;&lt;/span&gt;
+    &lt;span data-bind="Products[product]"&gt;&lt;/span&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+</code></pre></div></div>
+
+<p><strong>Output:</strong></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;ul&gt;
+  &lt;li&gt;
+    &lt;span data-bind="product"&gt;product1&lt;/span&gt;
+    &lt;span data-bind="Products[product]"&gt;$1&lt;/span&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;span data-bind="product"&gt;product2&lt;/span&gt;
+    &lt;span data-bind="Products[product]"&gt;$2&lt;/span&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+</code></pre></div></div>
+</section>
+</article>
+
+<!-- Disqus -->
+
+
+<!-- Post navigation -->
+
+
+    </div>
+    
+<script src="/assets/js/katex_init.js"></script>
+
+
+
+<footer class="site-footer">
+	<a class="subscribe icon-feed" href="/feed.xml">
+		<i class="fas fa-rss-square">
+			<span class="tooltip">Subscribe!</span>
+		</i>
+	</a>
+	<div class="inner">
+		<section class="copyright">
+			All content copyright
+			<a href="/">Justin Leveck</a>
+			© 2018 • All rights reserved.
+		</section>
+		<section class="poweredby">
+			Proudly published with
+			<a href="https://jekyllrb.com">Jekyll</a>
+		</section>
+	</div>
+</footer>
+  </body>
+</html>

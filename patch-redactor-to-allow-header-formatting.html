@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+	<meta charset="utf-8">
+	<title>Patch Redactor to allow header formatting | Justin Leveck</title>
+	<meta name="description" content="For whatever reason Redactor in older versions does not allow formatting to beapplied to headers. After some Googling I was able to find a solution posted by...">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="/patch-redactor-to-allow-header-formatting">
+
+	<!-- RSS -->
+	<link rel="alternate" type="application/atom+xml" title="Justin Leveck" href="/feed.xml" />
+
+	<!-- Font Awesome -->
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<!-- Google Fonts -->
+	
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic" rel="stylesheet" type="text/css">
+	
+
+	<!-- KaTeX -->
+	
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js"></script>
+	
+
+	<!-- Google Analytics -->
+	
+</head>
+
+
+  <body class=" url_patch_redactor_to_allow_header_formatting tags_redactor, tags_front_end layout_post" >
+    
+  
+    
+  <div class="call-out"
+  style="background-image: url('/assets/img/crystal-cove.jpg')">
+    <header class="site-custom-header">
+  <a class="blog-logo" href="/">
+    <span class="title">Justin Leveck</span>
+  </a>
+  <div class="social-media">
+    <a href="https://github.com/justinleveck" target="_new">
+      <i class="fa fa-github"></i>
+    </a>
+    <a href="https://twitter.com/justinleveck" target="_new">
+      <i class="fa fa-twitter"></i>
+    </a>
+    <a href="/resume">
+      <i class="fa fa-user"></i>
+    </a>
+  </div>
+</header>
+
+  </div>
+
+  
+
+    <div class="content">
+      <article >
+  <header style="background-image: url('/')">
+    <h1 class="title">Patch Redactor to allow header formatting</h1>
+    
+    <p class="meta">
+      December 21, 2015
+      
+      
+<footer>
+  <div class="tags">
+    
+      <i class="fa fa-tag fa-5">
+        <a class="tag" href="/tags/redactor/">redactor</a>
+      </i>
+    
+      <i class="fa fa-tag fa-5">
+        <a class="tag" href="/tags/front-end/">front-end</a>
+      </i>
+    
+  </div>
+</footer>
+
+
+    </p>
+  </header>
+  <section class="post-content"><p>For whatever reason Redactor in older versions does not allow formatting to be
+applied to headers. After some Googling I was able to find a solution posted by
+<a href="https://stackoverflow.com/users/130526/simon">Simon</a> on
+<a href="https://stackoverflow.com/questions/32088397/can-i-customise-the-header-tagsh1-h2-h3-in-redactor-editor">StackOverflow</a>.
+It turns out you can comment out one of the lines that guard against this and
+it works!</p>
+
+<p><img src="assets/img/redactor_heading_patch.png" /></p>
+
+<p>The following line prevents formatting actions taking affect on headers.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">utils</span><span class="p">.</span><span class="nx">isCurrentOrParent</span><span class="p">(</span><span class="s1">'PRE'</span><span class="p">)</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">utils</span><span class="p">.</span><span class="nx">isCurrentOrParentHeader</span><span class="p">())</span> <span class="k">return</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>It needs to be changed to:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">utils</span><span class="p">.</span><span class="nx">isCurrentOrParent</span><span class="p">(</span><span class="s1">'PRE'</span><span class="p">))</span> <span class="k">return</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Although we can make these changes directly to the source code there are
+downsides to this including maintainability.</p>
+
+<p>Applying the changes via a patch is more preferable.</p>
+
+<p>The below patch will allow formats (e.g. bold, italic, underline,
+strikethrough) to be applied to redactor headings.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">.</span><span class="nx">Redactor</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">_inline</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">Redactor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">inline</span><span class="p">;</span>
+    <span class="nx">$</span><span class="p">.</span><span class="nx">Redactor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">inline</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="nx">_inline</span><span class="p">();</span>
+      <span class="nx">obj</span><span class="p">.</span><span class="nx">format</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">tag</span><span class="p">,</span> <span class="nx">type</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+                     <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">utils</span><span class="p">.</span><span class="nx">isCurrentOrParent</span><span class="p">(</span><span class="s1">'PRE'</span><span class="p">))</span> <span class="k">return</span><span class="p">;</span>
+                     <span class="c1">//rest of method from source</span>
+      <span class="k">return</span> <span class="nx">obj</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+</code></pre></div></div>
+</section>
+</article>
+
+<!-- Disqus -->
+
+
+<!-- Post navigation -->
+
+
+    </div>
+    
+<script src="/assets/js/katex_init.js"></script>
+
+
+
+<footer class="site-footer">
+	<a class="subscribe icon-feed" href="/feed.xml">
+		<i class="fas fa-rss-square">
+			<span class="tooltip">Subscribe!</span>
+		</i>
+	</a>
+	<div class="inner">
+		<section class="copyright">
+			All content copyright
+			<a href="/">Justin Leveck</a>
+			© 2018 • All rights reserved.
+		</section>
+		<section class="poweredby">
+			Proudly published with
+			<a href="https://jekyllrb.com">Jekyll</a>
+		</section>
+	</div>
+</footer>
+  </body>
+</html>
