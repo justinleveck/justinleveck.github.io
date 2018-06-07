@@ -113,6 +113,10 @@ defaults:
   values:
     layout: "post"
 
+deploy:
+  - echo "hello world"
+
+
 # # CONTENTFUL
 # collections_dir: collections
 
