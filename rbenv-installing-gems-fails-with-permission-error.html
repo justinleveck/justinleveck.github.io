@@ -120,45 +120,34 @@ here as well.</p>
 <p><strong>To fix this perform the following steps.</strong></p>
 
 <ol>
-  <li>
-    <p>Determine the path you need to copy to your profile:</p>
-
+  <li>Determine the path you need to copy to your profile:
     <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rbenv init -
 </code></pre></div>    </div>
-  </li>
-</ol>
 
-<p>The first line of the output is the line you need to copy over to your profile:</p>
+    <p>The first line of the output is the line you need to copy over to your profile:</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">"/Users/justin/.rbenv/shims:</span><span class="k">${</span><span class="nv">PATH</span><span class="k">}</span><span class="s2">"</span> <span class="c">#path that needs to be copied</span>
-    <span class="nb">source</span> <span class="s2">"/usr/local/Cellar/rbenv/0.4.0/libexec/../completions/rbenv.zsh"</span>
-    rbenv rehash 2&gt;/dev/null
-    rbenv<span class="o">()</span> <span class="o">{</span>
-      <span class="nb">typeset command
-      command</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span>
-      <span class="k">if</span> <span class="o">[</span> <span class="s2">"$#"</span> <span class="nt">-gt</span> 0 <span class="o">]</span><span class="p">;</span> <span class="k">then
-        </span><span class="nb">shift
-      </span><span class="k">fi
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">"/Users/justin/.rbenv/shims:</span><span class="k">${</span><span class="nv">PATH</span><span class="k">}</span><span class="s2">"</span> <span class="c">#path that needs to be copied</span>
+  <span class="nb">source</span> <span class="s2">"/usr/local/Cellar/rbenv/0.4.0/libexec/../completions/rbenv.zsh"</span>
+  rbenv rehash 2&gt;/dev/null
+  rbenv<span class="o">()</span> <span class="o">{</span>
+    <span class="nb">typeset command
+    command</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span>
+    <span class="k">if</span> <span class="o">[</span> <span class="s2">"$#"</span> <span class="nt">-gt</span> 0 <span class="o">]</span><span class="p">;</span> <span class="k">then
+      </span><span class="nb">shift
+    </span><span class="k">fi
 
-      case</span> <span class="s2">"</span><span class="nv">$command</span><span class="s2">"</span> <span class="k">in
-      </span>rehash|shell<span class="p">)</span>
-        <span class="nb">eval</span> <span class="sb">`</span>rbenv <span class="s2">"sh-</span><span class="nv">$command</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$@</span><span class="s2">"</span><span class="sb">`</span><span class="p">;;</span>
-      <span class="k">*</span><span class="p">)</span>
-        <span class="nb">command </span>rbenv <span class="s2">"</span><span class="nv">$command</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$@</span><span class="s2">"</span><span class="p">;;</span>
-      <span class="k">esac</span>
-    <span class="o">}</span>
-</code></pre></div></div>
-
-<ol>
-  <li>
-    <p>Copy the path to your profile and save it</p>
+    case</span> <span class="s2">"</span><span class="nv">$command</span><span class="s2">"</span> <span class="k">in
+    </span>rehash|shell<span class="p">)</span>
+      <span class="nb">eval</span> <span class="sb">`</span>rbenv <span class="s2">"sh-</span><span class="nv">$command</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$@</span><span class="s2">"</span><span class="sb">`</span><span class="p">;;</span>
+    <span class="k">*</span><span class="p">)</span>
+      <span class="nb">command </span>rbenv <span class="s2">"</span><span class="nv">$command</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$@</span><span class="s2">"</span><span class="p">;;</span>
+    <span class="k">esac</span>
+  <span class="o">}</span>
+</code></pre></div>    </div>
   </li>
-  <li>
-    <p>Reload your profile (source ~/.zshenv for me)</p>
-  </li>
-  <li>
-    <p>Run <code class="highlighter-rouge">rbenv rehash</code></p>
-  </li>
+  <li>Copy the path to your profile and save it</li>
+  <li>Reload your profile (source ~/.zshenv for me)</li>
+  <li>Run <code class="highlighter-rouge">rbenv rehash</code></li>
 </ol>
 
 <p>Now when you run <code class="highlighter-rouge">which gem</code> you should get a local path that you have permissions to:</p>
