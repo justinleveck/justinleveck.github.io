@@ -3,7 +3,13 @@
   {% include head.html %}
 
   <body class="{% body_class %}" >
-    {% include post_header.html %}
+    {% unless page.feature-img %}
+      {% if page.tag_title %}
+        {% include tag_header.html %}
+      {% else %}
+        {% include site_header.html %}
+      {% endif %}
+    {% endunless %}
     <div class="content">
       {{ content }}
     </div>

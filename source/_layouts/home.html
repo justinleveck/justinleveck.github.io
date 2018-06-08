@@ -3,13 +3,6 @@ layout: default
 ---
 
 <div class="home">
-  {% if page.tag_title %}
-    {% include tag_header.html %}
-  {% else %}
-    {% include site_header.html %}
-  {% endif %}
-
-
   <div class="posts">
     {% for post in paginator.posts %}
     <div class="post-teaser">

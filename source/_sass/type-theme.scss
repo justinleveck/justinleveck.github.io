@@ -33,9 +33,13 @@
 body {
   color: #454547;
   font-family: "Calibre", -apple-system, BlinkMacSystemFont, "Avenir Next", "Avenir", "Segoe UI", "Lucida Grande", "Helvetica Neue", "Helvetica", "Fira Sans", "Roboto", "Noto", "Droid Sans", "Cantarell", "Oxygen", "Ubuntu", "Franklin Gothic Medium", "Century Gothic", "Liberation Sans", sans-serif;
-  font-size: 1.4rem;
   -webkit-font-smoothing: antialiased;
-  line-height: 1.9rem
+}
+
+.content {
+  max-width: 60em;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .excerpt a.button {
@@ -43,7 +47,7 @@ body {
 }
 
 p {
-  margin: 0 0 1.71rem;
+  // margin: 0 0 1.71rem;
 }
 
 hr {
